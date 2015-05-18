@@ -106,8 +106,8 @@ public class RoadGraph {
             }
         }
         g.addAttribute("ui.stylesheet", styleSheet);
-        g.addAttribute("ui.quality");
-        g.addAttribute("ui.antialias");
+        //g.addAttribute("ui.quality");
+        //g.addAttribute("ui.antialias");
         return g;
     }
 }
