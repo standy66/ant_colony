@@ -10,50 +10,6 @@ import java.util.TreeSet;
  * Created by andrew on 17.05.15.
  */
 public class SimpleAntColony {
-    public class Path implements Comparable<Path> {
-        private ArrayList<Graph.Edge> edges;
-        private double totalWeight;
-        private long currentVertex;
-
-        public Path(long startVertex) {
-            edges = new ArrayList<>();
-            totalWeight = 0;
-            currentVertex = startVertex;
-        }
-
-        public long currentVertex() {
-            return currentVertex;
-        }
-
-        public ArrayList<Graph.Edge> getEdges() {
-            return edges;
-        }
-
-        public double getTotalWeight() {
-            return totalWeight;
-        }
-
-        public void addEdge(Graph.Edge e) {
-            if (e.from != currentVertex()) {
-                throw new IllegalArgumentException("edge.from != currentVertex()");
-            }
-            edges.add(e);
-            totalWeight += e.weight;
-            currentVertex = e.to;
-        }
-
-        @Override
-        public int compareTo(Path o) {
-            if (totalWeight < o.getTotalWeight()) {
-                return - 1;
-            } else if (totalWeight == o.getTotalWeight()) {
-                return 0;
-            } else {
-                return 1;
-            }
-        }
-    }
-
     private Graph graph;
     private long destinationVertex;
     private Ant[] ants;
@@ -64,7 +20,6 @@ public class SimpleAntColony {
     private long startVertex;
     private long noPathsFound = 0;
     private double dampingFactor;
-
     public SimpleAntColony(Graph graph, long startVertex,
                            long destinationVertex, int antCount, double greediness, double perseverance, double dampingFactor) {
         this.graph = graph;
@@ -109,13 +64,57 @@ public class SimpleAntColony {
                 }
             }
             Map<Long, List<Graph.Edge>> mapping = graph.getGraph();
-            for (List<Graph.Edge> edges: mapping.values()) {
-                for (Graph.Edge e: edges) {
+            for (List<Graph.Edge> edges : mapping.values()) {
+                for (Graph.Edge e : edges) {
                     e.pheromoneLevel *= (1 - dampingFactor);
                 }
             }
         }
         return accepted.first();
+    }
+
+    public class Path implements Comparable<Path> {
+        private ArrayList<Graph.Edge> edges;
+        private double totalWeight;
+        private long currentVertex;
+
+        public Path(long startVertex) {
+            edges = new ArrayList<>();
+            totalWeight = 0;
+            currentVertex = startVertex;
+        }
+
+        public long currentVertex() {
+            return currentVertex;
+        }
+
+        public ArrayList<Graph.Edge> getEdges() {
+            return edges;
+        }
+
+        public double getTotalWeight() {
+            return totalWeight;
+        }
+
+        public void addEdge(Graph.Edge e) {
+            if (e.from != currentVertex()) {
+                throw new IllegalArgumentException("edge.from != currentVertex()");
+            }
+            edges.add(e);
+            totalWeight += e.weight;
+            currentVertex = e.to;
+        }
+
+        @Override
+        public int compareTo(Path o) {
+            if (totalWeight < o.getTotalWeight()) {
+                return -1;
+            } else if (totalWeight == o.getTotalWeight()) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
     }
 
 

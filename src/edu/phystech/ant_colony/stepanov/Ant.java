@@ -1,6 +1,5 @@
 package edu.phystech.ant_colony.stepanov;
 
-import java.util.Collection;
 import java.util.List;
 
 /**

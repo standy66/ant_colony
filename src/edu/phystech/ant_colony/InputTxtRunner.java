@@ -4,7 +4,6 @@ import edu.phystech.ant_colony.stepanov.Graph;
 import edu.phystech.ant_colony.stepanov.SimpleAntColony;
 import org.graphstream.algorithm.generator.Generator;
 import org.graphstream.algorithm.generator.RandomEuclideanGenerator;
-import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 
 import java.io.FileInputStream;
@@ -27,6 +26,8 @@ public class InputTxtRunner {
                     "}";
 
     static int n = 300;
+    private static double[][] w = new double[n][n];
+
     private static Graph generateFull(int n) {
         Random r = new Random();
         Graph g = new Graph();
@@ -40,8 +41,6 @@ public class InputTxtRunner {
         }
         return g;
     }
-
-    private static double[][] w = new double[n][n];
 
     private static Graph readGraph() throws FileNotFoundException {
         Scanner scanner = new Scanner(new FileInputStream("input.txt"));
@@ -66,7 +65,7 @@ public class InputTxtRunner {
         Generator gen = new RandomEuclideanGenerator();
         gen.addSink(graph);
         gen.begin();
-        for(int i=0; i<500; i++) {
+        for (int i = 0; i < 500; i++) {
             gen.nextEvents();
         }
         gen.end();
@@ -86,7 +85,6 @@ public class InputTxtRunner {
                     }
                 }
             }
-
 
 
             SimpleAntColony antColony = new SimpleAntColony(g, 0, 50, 100, 0.5, 0.5, 0.01);

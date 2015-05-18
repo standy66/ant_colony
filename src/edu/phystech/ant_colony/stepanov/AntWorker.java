@@ -1,18 +1,18 @@
 package edu.phystech.ant_colony.stepanov;
 
-import javafx.util.Pair;
-
-import java.util.*;
-import java.util.function.ToDoubleFunction;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * Created by andrew on 17.05.15.
  */
 public class AntWorker implements Ant {
+    private final static Random randomGenerator = new Random();
     private double greediness;
     private double perseverance;
     private Set<Long> tabooVertices;
-    private final static Random randomGenerator = new Random();
     private double[] probabilities = new double[400];
 
     public AntWorker(double greediness, double perseverance) {

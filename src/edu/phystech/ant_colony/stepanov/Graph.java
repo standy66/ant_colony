@@ -1,43 +1,15 @@
 package edu.phystech.ant_colony.stepanov;
 
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by andrew on 17.05.15.
  */
 public class Graph {
-    public static class Edge {
-        public long from;
-        public long to;
-        public double pheromoneLevel;
-        public double attractiveness;
-        public double weight;
-
-        public Edge(long from, long to, double pheromoneLevel, double weight) {
-            this.from = from;
-            this.to = to;
-            this.pheromoneLevel = pheromoneLevel;
-            this.weight = weight;
-            this.attractiveness = 1 / weight;
-        }
-
-        @Override
-        public String toString() {
-            return String.format("(%d %d %f %f)", from, to, pheromoneLevel, attractiveness);
-        }
-    }
-
     private Map<Long, List<Edge>> mapping;
-
-    public Map<Long, List<Edge>> getGraph() {
-        return mapping;
-    }
-
-    public List<Edge> edgesFrom(long vertex) {
-        return mapping.get(vertex);
-    }
 
     public Graph(Map<Long, List<Edge>> mapping) {
         this.mapping = mapping;
@@ -45,6 +17,14 @@ public class Graph {
 
     public Graph() {
         mapping = new HashMap<>();
+    }
+
+    public Map<Long, List<Edge>> getGraph() {
+        return mapping;
+    }
+
+    public List<Edge> edgesFrom(long vertex) {
+        return mapping.get(vertex);
     }
 
     public int getVertexCount() {
@@ -69,5 +49,26 @@ public class Graph {
             stringBuilder.append('\n');
         }
         return stringBuilder.toString();
+    }
+
+    public static class Edge {
+        public long from;
+        public long to;
+        public double pheromoneLevel;
+        public double attractiveness;
+        public double weight;
+
+        public Edge(long from, long to, double pheromoneLevel, double weight) {
+            this.from = from;
+            this.to = to;
+            this.pheromoneLevel = pheromoneLevel;
+            this.weight = weight;
+            this.attractiveness = 1 / weight;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("(%d %d %f %f)", from, to, pheromoneLevel, attractiveness);
+        }
     }
 }
