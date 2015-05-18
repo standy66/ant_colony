@@ -5,4 +5,3 @@ package edu.phystech.ant_colony.tests;
  */
 public class PathFinderTest {
 }
-    

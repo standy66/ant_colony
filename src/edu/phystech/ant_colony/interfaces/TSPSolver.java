@@ -7,5 +7,6 @@ import java.util.List;
  * Created by nastya on 18.05.15.
  */
 public interface TSPSolver {
-    List<Edge> solve();
+    List<Edge> solve(Graph graph);
+    double solveWeightOnly(Graph graph);
 }
