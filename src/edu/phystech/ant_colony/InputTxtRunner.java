@@ -2,6 +2,7 @@ package edu.phystech.ant_colony;
 
 import edu.phystech.ant_colony.stepanov.Graph;
 import edu.phystech.ant_colony.stepanov.SimpleAntColony;
+import edu.phystech.ant_colony.stepanov.SimpleAntColonyDistanceFinder;
 import org.graphstream.algorithm.generator.Generator;
 import org.graphstream.algorithm.generator.RandomEuclideanGenerator;
 import org.graphstream.graph.implementations.SingleGraph;
@@ -17,15 +18,15 @@ import java.util.Scanner;
  * Created by andre w on 17.05.15.
  */
 public class InputTxtRunner {
-    protected static String styleSheet =
+    /*protected static String styleSheet =
             "node {" +
                     "   fill-color: black;" +
                     "}" +
                     "node.marked {" +
                     "   fill-color: red;" +
-                    "}";
+                    "}";*/
 
-    static int n = 300;
+    static int n = 100;
     private static double[][] w = new double[n][n];
 
     private static Graph generateFull(int n) {
@@ -61,7 +62,7 @@ public class InputTxtRunner {
     }
 
     public static void main(String[] args) {
-        SingleGraph graph = new SingleGraph("random euclidean");
+        /*SingleGraph graph = new SingleGraph("random euclidean");
         Generator gen = new RandomEuclideanGenerator();
         gen.addSink(graph);
         gen.begin();
@@ -70,7 +71,7 @@ public class InputTxtRunner {
         }
         gen.end();
         graph.display(false);
-        graph.getEdge(0).
+        graph.getEdge(0).*/
 
         try {
             System.in.read();
@@ -87,8 +88,8 @@ public class InputTxtRunner {
             }
 
 
-            SimpleAntColony antColony = new SimpleAntColony(g, 0, 50, 100, 0.5, 0.5, 0.01);
-            SimpleAntColony.Path path = antColony.run(150);
+            SimpleAntColony antColony = new SimpleAntColonyDistanceFinder(g, 0, 50, 200, 0.5, 0.5, 0.1);
+            SimpleAntColony.Path path = antColony.run(1000);
             PrintWriter printWriter = new PrintWriter("output.txt");
             System.out.printf("ACO: %f\n", path.getTotalWeight());
             System.out.printf("Floyd: %f\n", w[0][50]);

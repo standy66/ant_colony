@@ -9,21 +9,17 @@ import java.util.TreeSet;
 /**
  * Created by andrew on 17.05.15.
  */
-public class SimpleAntColony {
-    private Graph graph;
-    private long destinationVertex;
-    private Ant[] ants;
-    private Path[] paths;
-    private double greediness;
-    private double perseverance;
-    private TreeSet<Path> accepted;
-    private long startVertex;
-    private long noPathsFound = 0;
-    private double dampingFactor;
-    public SimpleAntColony(Graph graph, long startVertex,
-                           long destinationVertex, int antCount, double greediness, double perseverance, double dampingFactor) {
+public abstract class SimpleAntColony {
+    protected Graph graph;
+    protected Ant[] ants;
+    protected Path[] paths;
+    protected double greediness;
+    protected double perseverance;
+    protected TreeSet<Path> accepted;
+    protected long startVertex;
+    protected double dampingFactor;
+    public SimpleAntColony(Graph graph, long startVertex, int antCount, double greediness, double perseverance, double dampingFactor) {
         this.graph = graph;
-        this.destinationVertex = destinationVertex;
         this.ants = new Ant[antCount];
         this.paths = new Path[antCount];
         this.greediness = greediness;
@@ -37,38 +33,48 @@ public class SimpleAntColony {
         this.dampingFactor = dampingFactor;
     }
 
-    protected boolean acceptAnt(Path path) {
-        return path.currentVertex() == destinationVertex;
+    protected abstract boolean acceptAnt(Path path);
+
+    protected void onAntWalksEdge(Graph.Edge antDecision, Ant ant) {
+        antDecision.pheromoneLevel += 1;
+    }
+
+    protected void onAntAccepted(Ant ant, Path path) {
+
+    }
+
+    protected void onWorldIterationEnds() {
+        Map<Long, List<Graph.Edge>> mapping = graph.getGraph();
+        for (List<Graph.Edge> edges : mapping.values()) {
+            for (Graph.Edge e : edges) {
+                e.pheromoneLevel *= (1 - dampingFactor);
+            }
+        }
     }
 
     public Path run(int minStepsCount) throws IOException {
         for (int step = 0; step < minStepsCount || accepted.size() == 0; step++) {
-            if (step % 100 == 0) {
-                //System.in.read();
-                System.out.println(step);
-                System.out.println(noPathsFound);
-            }
+
             for (int antIndex = 0; antIndex < ants.length; antIndex++) {
                 Ant ant = ants[antIndex];
                 Path path = paths[antIndex];
                 long vertex = path.currentVertex();
                 Graph.Edge antDecision = ant.decide(graph.edgesFrom(vertex));
-                //System.out.printf("Ant %d: %s\n", antIndex, antDecision);
+                if (antDecision == null) {
+                    ant.reset();
+                    continue;
+                }
                 path.addEdge(antDecision);
-                antDecision.pheromoneLevel += 1;
+                onAntWalksEdge(antDecision, ant);
                 if (acceptAnt(path)) {
+                    onAntAccepted(ant, path);
                     ant.reset();
                     accepted.add(path);
-                    noPathsFound++;
                     paths[antIndex] = new Path(startVertex);
+
                 }
             }
-            Map<Long, List<Graph.Edge>> mapping = graph.getGraph();
-            for (List<Graph.Edge> edges : mapping.values()) {
-                for (Graph.Edge e : edges) {
-                    e.pheromoneLevel *= (1 - dampingFactor);
-                }
-            }
+            onWorldIterationEnds();
         }
         return accepted.first();
     }
