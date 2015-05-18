@@ -6,7 +6,7 @@ import java.util.*;
  * Created by nastya on 17.05.15.
  */
 public class Ant {
-    private static final float GREEDYNESS = 0.5f;
+    private static final float GREED = 0.5f;
     private static final float PERSEVERANCE = 0.5f;
     private static final Random RANDOM = new Random();
     private Set<Integer> tabooList;
@@ -25,7 +25,7 @@ public class Ant {
         List<Pair<Double, Edge>> weights = new ArrayList<>();
         for (Edge edge : possibleEdges) {
             if (!tabooList.contains(edge.getToVertex())) {
-                weights.add(new Pair<>(Math.pow(edge.getPheromones(), PERSEVERANCE) * Math.pow(edge.getLength(), GREEDYNESS), edge));
+                weights.add(new Pair<>(Math.pow(edge.getPheromones(), PERSEVERANCE) * Math.pow(edge.getLength(), GREED), edge));
             }
         }
         if (weights.size() == 0) {

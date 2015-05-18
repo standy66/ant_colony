@@ -3,13 +3,11 @@ package edu.phystech.ant_colony.torunova;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by nastya on 17.05.15.
  */
 public class AntColony {
-    private static final Random RANDOM = new Random();
     private List<Ant> ants;
     private int homeVertex;
     private Graph graph;
@@ -40,8 +38,8 @@ public class AntColony {
 
     public List<Edge> findRoute(int numberOfIterations) {
         for (int j = 0; j < numberOfIterations; j++) {
-            for (int i = 0; i < ants.size(); i++) {
-                routes.add(ants.get(i).go());
+            for (Ant ant : ants) {
+                routes.add(ant.go());
             }
             spawnAnts(ants.size());
         }

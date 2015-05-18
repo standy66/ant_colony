@@ -21,6 +21,7 @@ public class AntWorker implements Ant {
         this.tabooVertices = new HashSet<>();
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static double pow(final double a, final double b) {
         //return Math.pow(a, b);
         final long tmp = Double.doubleToLongBits(a);
